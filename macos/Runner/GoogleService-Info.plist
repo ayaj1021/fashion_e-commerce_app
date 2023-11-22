@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDa_tl_mzQhGFnQY6rQV1h0qJoHlwBQqj8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>32197835535</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.fashionEcommerceApp.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>fashion-e-commerce-app-8df6a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fashion-e-commerce-app-8df6a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:32197835535:ios:5b2cfb61aba22c75999c7a</string>
+</dict>
+</plist>

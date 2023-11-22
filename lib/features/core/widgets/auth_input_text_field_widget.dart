@@ -6,15 +6,17 @@ class AuthInputTextField extends StatelessWidget {
     super.key,
     required this.labelText,
     this.suffixIcon,
-    this.obscureText, required this.controller,
+    this.obscureText, required this.controller, this.validate,
   });
   final String labelText;
   final Widget? suffixIcon;
   final bool? obscureText;
+  final String? Function(String?)? validate;
   final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validate,
       controller: controller,
       obscureText: obscureText!,
       decoration: InputDecoration(
