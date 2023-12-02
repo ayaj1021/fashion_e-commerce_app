@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:fashion_ecommerce_app/features/auth_service.dart';
 import 'package:fashion_ecommerce_app/features/authentication/auth_screens/signup_screen.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/auth_input_text_field_widget.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/long_button_widget.dart';
-import 'package:fashion_ecommerce_app/features/screens/category_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,55 +27,60 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.dispose();
   }
 
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  //FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool isLoading = false;
 
-  login() async {
-    User? currentUser;
+  // login() async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  //   User? currentUser;
 
-    await firebaseAuth
-        .signInWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim())
-        .then((auth) {
-      currentUser = auth.user;
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(error.toString()),
-        ),
-      );
-    });
+  //   await firebaseAuth
+  //       .signInWithEmailAndPassword(
+  //           email: emailController.text.trim(),
+  //           password: passwordController.text.trim())
+  //       .then((auth) {
+  //     currentUser = auth.user;
+  //   }).catchError((error) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text(error.toString()),
+  //       ),
+  //     );
+  //   });
 
-    if (currentUser != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Signup succesful'),
-        ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const BottomnavScreen(),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Not Logged in'),
-        ),
-      );
-    }
-  }
+  //   if (currentUser != null) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.green,
+  //         content: Text('Signup succesful'),
+  //       ),
+  //     );
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const BottomnavScreen(),
+  //       ),
+  //     );
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text('Not Logged in'),
+  //       ),
+  //     );
+  //   }
+  // }
 
   bool isObscure = true;
 
   final _formKey = GlobalKey<FormState>();
-
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +167,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         isLoading = true;
                       });
                       if (_formKey.currentState!.validate()) {
-                        login();
-                        setState(() {
-                          isLoading = false;
+                        AuthService()
+                            .login(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim())
+                            .then((_) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
                         });
                       }
                     },

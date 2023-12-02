@@ -1,10 +1,10 @@
+import 'package:fashion_ecommerce_app/features/auth_service.dart';
 import 'package:fashion_ecommerce_app/features/authentication/auth_screens/login_screen.dart';
-import 'package:fashion_ecommerce_app/features/authentication/auth_screens/success_screen.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/auth_input_text_field_widget.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/long_button_widget.dart';
+import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -18,7 +18,6 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
@@ -35,51 +34,51 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isConfirmPasswordObscure = true;
   bool isLoading = false;
 
-  signUp() async {
-    setState(() {
-        isLoading = true;
-      });
-    User? currentUser;
-    await firebaseAuth
-        .createUserWithEmailAndPassword(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim())
-        .then((auth) {
-      currentUser = auth.user;
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(error.toString()),
-        ),
-      );
-    },);
-    if (currentUser != null) {
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Signup succesful'),
-        ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const SuccessScreen(),
-        ),
-      );
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Not signed'),
-        ),
-      );
-    }
-  }
+  // signUp() async {
+  //   setState(() {
+  //       isLoading = true;
+  //     });
+  //   User? currentUser;
+  //   await firebaseAuth
+  //       .createUserWithEmailAndPassword(
+  //           email: emailController.text.trim(),
+  //           password: passwordController.text.trim())
+  //       .then((auth) {
+  //     currentUser = auth.user;
+  //   }).catchError((error) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text(error.toString()),
+  //       ),
+  //     );
+  //   },);
+  //   if (currentUser != null) {
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.green,
+  //         content: Text('Signup succesful'),
+  //       ),
+  //     );
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const SuccessScreen(),
+  //       ),
+  //     );
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text('Not signed'),
+  //       ),
+  //     );
+  //   }
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -146,7 +145,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                     controller: emailController,
-                    obscureText: false,
+                    obscureText: isPasswordObscure,
                     labelText: 'Email',
                   ),
                   const SizedBox(height: 10),
@@ -177,11 +176,32 @@ class _SignupScreenState extends State<SignupScreen> {
                   GestureDetector(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        signUp();
+                        // setState(() {
+                        //   isLoading = true;
+                        // });
+                        //  signUp();
+                        AuthService().sendData();
+
+                        // AuthService()
+                        //     .signUp(
+                        //         //   name: userNameController.text.trim(),
+                        //         email: emailController.text.trim(),
+                        //         password: passwordController.text.trim())
+                        //     .then((value) {
+                        //   setState(() {
+                        //     isLoading = false;
+                        //   });
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (_) => const HomeScreen(),
+                        //     ),
+                        //   );
+                        // });
                       }
                     },
-                    child:  LongButtonContainer(
-                      buttonName:isLoading == true ? 'Loading' : 'Sign up',
+                    child: LongButtonContainer(
+                      buttonName: isLoading == true ? 'Loading...' : 'Sign up',
                       buttonTextColor: Colors.white,
                       buttonColor: Colors.black,
                     ),

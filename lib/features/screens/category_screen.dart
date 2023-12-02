@@ -1,5 +1,6 @@
 import 'package:fashion_ecommerce_app/features/core/widgets/category_container_widget.dart';
 import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
+import 'package:fashion_ecommerce_app/features/screens/pages/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +15,7 @@ class _BottomnavScreenState extends State<BottomnavScreen> {
   int currentPage = 0;
 
   List pages = [
-    HomeScreen(
+    const HomeScreen(
       
     ),
     const Center(
@@ -23,9 +24,7 @@ class _BottomnavScreenState extends State<BottomnavScreen> {
     const Center(
       child: Text('Notification page'),
     ),
-    const Center(
-      child: Text('Profile page'),
-    ),
+    const ProfileScreen()
   ];
 
   @override

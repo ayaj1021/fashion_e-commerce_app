@@ -1,11 +1,27 @@
+import 'package:fashion_ecommerce_app/features/models/get_all_products_model.dart';
+import 'package:fashion_ecommerce_app/features/services/get_products_service.dart';
+
 import 'package:flutter/material.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<GetAllProductsModel>? getAllProducts;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    //  final ref = FirebaseDatabase.instance.ref('products');
+    //  DatabaseReference ref = FirebaseDatabase.instance.ref();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -51,29 +67,87 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 5,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 300,
-                        width: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Image.asset(
-                          'assets/images/clothe1.png',
-                          fit: BoxFit.cover,
-                        ),
+              FutureBuilder<List<GetAllProductsModel>>(
+                  future: GetProductsService().getProducts(),
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasData) {
+                      return GridView.builder(
+                          itemCount: data!.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          itemBuilder: (_, index) {
+                            return Column(
+                              children: [
+                                Container(
+                                    height: 300,
+                                    width: 400,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(12)),
+                                    child: Text(data[index].title))
+                              ],
+                            );
+                          });
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
                       );
-                    }),
-              )
+                    }
+                    return const Text('Something Went Wrong!!!');
+                  }),
+
+              // Expanded(
+              //   child: GridView.builder(
+              //       shrinkWrap: true,
+              //       itemCount: products.length,
+              //       gridDelegate:
+              //           const SliverGridDelegateWithFixedCrossAxisCount(
+              //         //  mainAxisSpacing: 5,
+              //         crossAxisSpacing: 10,
+              //         crossAxisCount: 2,
+              //       ),
+              //       itemBuilder: (context, index) {
+              //         final item = products[index];
+              //         return Column(
+              //           children: [
+              //             Container(
+              //               height: 100,
+              //               width: 200,
+              //               decoration: BoxDecoration(
+              //                 color: Colors.blue,
+              //                 borderRadius: BorderRadius.circular(12),
+              //               ),
+              //               child: Image.asset(item.image, fit: BoxFit.cover),
+              //             ),
+              //             Text(
+              //               item.itemTitle,
+              //               style: GoogleFonts.poppins(
+              //                 fontSize: 18,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //             Text(
+              //               item.itemDescription,
+              //               style: GoogleFonts.poppins(
+              //                 fontWeight: FontWeight.normal,
+              //               ),
+              //             ),
+              //             Text(
+              //               '\$${item.itemPrice}',
+              //               style: GoogleFonts.poppins(
+              //                 fontSize: 20,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           ],
+              //         );
+              //       }),
+              // ),
             ],
           ),
         ),
