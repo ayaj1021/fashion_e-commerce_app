@@ -1,12 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:fashion_ecommerce_app/features/auth_service.dart';
+import 'package:fashion_ecommerce_app/features/services/auth_service.dart';
 import 'package:fashion_ecommerce_app/features/authentication/auth_screens/signup_screen.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/auth_input_text_field_widget.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/long_button_widget.dart';
-
-import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -141,8 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     validate: (password) {
                       if (password == null || password.isEmpty) {
                         return 'Please enter your password';
-                      } else if (password.length < 6) {
-                        return 'Password should be a minimum of 6 characters';
                       }
                       return null;
                     },
@@ -169,18 +164,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState!.validate()) {
                         AuthService()
                             .login(
+                                context: context,
                                 email: emailController.text.trim(),
                                 password: passwordController.text.trim())
                             .then((_) {
                           setState(() {
                             isLoading = false;
                           });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                          );
                         });
                       }
                     },

@@ -1,24 +1,32 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
 import 'package:fashion_ecommerce_app/features/models/get_all_products_model.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class GetProductsService {
-  Future<List<GetAllProductsModel>> getProducts() async {
-    Dio dio = Dio();
+  Future getProducts() async {
     List<GetAllProductsModel> allProducts = [];
     String url = 'https://fakestoreapi.com/products';
 
-    var response = await dio.get(url);
-    debugPrint(response.data);
+    var response = await http.get(Uri.parse(url));
+    var data = jsonDecode(response.body);
+    debugPrint(response.body);
+
     try {
       if (response.statusCode == 200) {
-        debugPrint(response.statusCode.toString());
-        allProducts = response.data;
+        for (var products in data) {
+          GetAllProductsModel getAllProductsModel =
+              GetAllProductsModel.fromJson(products);
+          allProducts.add(getAllProductsModel);
+        }
+        print(data);
+        print(allProducts.length);
+        return data;
 
         //.toList();
       } else {
         debugPrint('Failed');
-        debugPrint(response.data);
+        debugPrint(response.body);
         debugPrint(response.statusCode.toString());
       }
       return allProducts;

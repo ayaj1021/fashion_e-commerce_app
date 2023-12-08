@@ -1,8 +1,8 @@
-import 'package:fashion_ecommerce_app/features/auth_service.dart';
+import 'package:fashion_ecommerce_app/features/services/auth_service.dart';
 import 'package:fashion_ecommerce_app/features/authentication/auth_screens/login_screen.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/auth_input_text_field_widget.dart';
 import 'package:fashion_ecommerce_app/features/core/widgets/long_button_widget.dart';
-import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
+//import 'package:fashion_ecommerce_app/features/screens/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -139,13 +139,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     validate: (email) {
                       if (email == null || email.isEmpty) {
                         return 'Please enter your email address';
-                      } else if (!email.contains('@') || !email.contains('.')) {
-                        return 'Please enter a valid email';
                       }
                       return null;
                     },
                     controller: emailController,
-                    obscureText: isPasswordObscure,
+                    obscureText: false,
                     labelText: 'Email',
                   ),
                   const SizedBox(height: 10),
@@ -153,8 +151,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     validate: (password) {
                       if (password == null || password.isEmpty) {
                         return ' Please enter your password';
-                      } else if (password.length < 6) {
-                        return 'Password must be minimum of 6 characters';
                       }
                       return null;
                     },
@@ -176,28 +172,26 @@ class _SignupScreenState extends State<SignupScreen> {
                   GestureDetector(
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
-                        // setState(() {
-                        //   isLoading = true;
-                        // });
+                        setState(() {
+                          isLoading = true;
+                        });
                         //  signUp();
-                        AuthService().sendData();
+                        // AuthService().sendData(
+                        //     name: userNameController.text.trim(),
+                        //     email: emailController.text.trim(),
+                        //     password: passwordController.text.trim());
 
-                        // AuthService()
-                        //     .signUp(
-                        //         //   name: userNameController.text.trim(),
-                        //         email: emailController.text.trim(),
-                        //         password: passwordController.text.trim())
-                        //     .then((value) {
-                        //   setState(() {
-                        //     isLoading = false;
-                        //   });
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (_) => const HomeScreen(),
-                        //     ),
-                        //   );
-                        // });
+                        AuthService()
+                            .signUp(
+                                context: context,
+                                name: userNameController.text.trim(),
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim())
+                            .then((value) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
                       }
                     },
                     child: LongButtonContainer(
